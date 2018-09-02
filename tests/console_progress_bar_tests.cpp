@@ -1,10 +1,25 @@
 #include "gtest/gtest.h"
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 #include <functional>
 #include "console_progress_bar.h"
 
 using namespace mcf;
+
+std::string evaluate(const std::stringstream& s) {
+	auto result = s.str();
+	size_t pos_found;
+	while ((pos_found = result.find('\r')) != std::string::npos) {
+		result.erase(pos_found - 1, 2);
+	}
+	return result;
+}
+
+void ASSERT_BUFFER(const char* expected, const std::stringstream& s) {
+	auto evaluated = evaluate(s);
+	ASSERT_STREQ(expected, evaluated.c_str());
+}
 
 TEST(progress_bar, default_usage) {
 	std::stringstream s;
@@ -13,8 +28,7 @@ TEST(progress_bar, default_usage) {
 	cpb.set(0.5);
 
 	auto expected = "|##########          |";
-
-	ASSERT_TRUE(expected == s.str());
+	ASSERT_BUFFER(expected, s);
 }
 
 TEST(progress_bar, change_values) {
@@ -25,8 +39,7 @@ TEST(progress_bar, change_values) {
 	cpb.set(0.1);
 
 	auto expected = "|##                  |";
-
-	ASSERT_TRUE(expected == s.str());
+	ASSERT_BUFFER(expected, s);
 }
 
 TEST(progress_bar, negative_value) {
@@ -36,8 +49,7 @@ TEST(progress_bar, negative_value) {
 	cpb.set(-0.3);
 
 	auto expected = "|                    |";
-
-	ASSERT_TRUE(expected == s.str());
+	ASSERT_BUFFER(expected, s);
 }
 
 TEST(progress_bar, greater_than_one) {
@@ -47,8 +59,7 @@ TEST(progress_bar, greater_than_one) {
 	cpb.set(1.3);
 
 	auto expected = "|####################|";
-
-	ASSERT_TRUE(expected == s.str());
+	ASSERT_BUFFER(expected, s);
 }
 
 TEST(progress_bar, finished_after_one) {
@@ -58,9 +69,8 @@ TEST(progress_bar, finished_after_one) {
 	cpb.set(1.0);
 	cpb.set(0.3);
 
-	auto expected = "|####################|\n";
-
-	ASSERT_TRUE(expected == s.str());
+	auto expected = "|####################|";
+	ASSERT_BUFFER(expected, s);
 }
 
 
@@ -71,10 +81,8 @@ TEST(progress_bar, cancel) {
 	cpb.set(0.1);
 	cpb.cancel(" Canceled");
 
-	auto expected = "|##                  | Canceled\n";
-	auto actual = s.str();
-
-	ASSERT_TRUE(expected == actual);
+	auto expected = "|##                  | Canceled";
+	ASSERT_BUFFER(expected, s);
 }
 
 TEST(progress_bar, changed) {
@@ -86,8 +94,7 @@ TEST(progress_bar, changed) {
 	cpb.set(0.1);
 
 	auto expected = "|!!------------------|";
-	
-	ASSERT_TRUE(expected == s.str());
+	ASSERT_BUFFER(expected, s);
 }
 
 TEST(progress_bar, start_end_changed) {
@@ -99,8 +106,7 @@ TEST(progress_bar, start_end_changed) {
 	cpb.set(0.1);
 
 	auto expected = "Test _/|##                  |\\_ Done";
-
-	ASSERT_TRUE(expected == s.str());
+	ASSERT_BUFFER(expected, s);
 }
 
 

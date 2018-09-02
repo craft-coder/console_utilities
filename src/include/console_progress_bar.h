@@ -33,7 +33,7 @@ namespace mcf {
 
 		void cancel(const std::string& message = "") {
 			finished_ = true;
-			os_ << message << std::endl;
+			os_ << message;
 		}
 
 		void set(double percentage) {
@@ -65,7 +65,7 @@ namespace mcf {
 		}
 
 		void clear_line() {
-			os_ << std::string(last_line_length_, '\b');
+			os_ << std::string(last_line_length_, '\r');
 		}
 
 		void write_line(double percentage) {
