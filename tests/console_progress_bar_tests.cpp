@@ -1,3 +1,4 @@
+#include "gtest/gtest.h"
 #include <iostream>
 #include <sstream>
 #include <functional>
@@ -5,17 +6,7 @@
 
 using namespace mcf;
 
-template <typename T1, typename T2>
-bool check(T1 t1, T2 t2, const char* function_name) {
-	if (t1 != t2) {
-		std::cerr << "Test " << function_name << " failed\n";
-		std::cerr << "Value " << t1 << " unequal " << t2 << "\n";
-		return false;
-	}
-	return true;
-}
-
-bool test_default_usage() {
+TEST(progress_bar, default_usage) {
 	std::stringstream s;
 	console_progress_bar cpb(s);
 
@@ -24,10 +15,10 @@ bool test_default_usage() {
 	auto expected = "|##########          |";
 	auto actual = s.str();
 
-	return check(expected, actual, __FUNCTION__);
+	ASSERT_TRUE(expected == actual);
 }
 
-bool test_cancel() {
+TEST(progress_bar, cancel) {
 	std::stringstream s;
 	console_progress_bar cpb(s);
 
@@ -37,10 +28,10 @@ bool test_cancel() {
 	auto expected = "|##                  | Canceled\n";
 	auto actual = s.str();
 
-	return check(expected, actual, __FUNCTION__);
+	ASSERT_TRUE(expected == actual);
 }
 
-bool test_char_changed() {
+TEST(progress_bar, changed) {
 	std::stringstream s;
 	console_progress_bar cpb(s);
 	cpb.set_filled_char('!');
@@ -51,10 +42,10 @@ bool test_char_changed() {
 	auto expected = "|!!------------------|";
 	auto actual = s.str();
 
-	return check(expected, actual, __FUNCTION__);
+	ASSERT_TRUE(expected == actual);
 }
 
-bool test_start_end_changed() {
+TEST(progress_bar, start_end_changed) {
 	std::stringstream s;
 	console_progress_bar cpb(s);
 	cpb.set_bar_start("Test _/|");
@@ -65,21 +56,8 @@ bool test_start_end_changed() {
 	auto expected = "Test _/|##                  |\\_ Done";
 	auto actual = s.str();
 
-	return check(expected, actual, __FUNCTION__);
+	ASSERT_TRUE(expected == actual);
 }
 
 
 
-int main() {
-	auto success = test_default_usage();
-	success &= test_cancel();
-	success &= test_char_changed();
-	success &= test_start_end_changed();
-
-	if (success) {
-		return EXIT_SUCCESS;
-	}
-	else {
-		return EXIT_FAILURE;
-	}
-}
