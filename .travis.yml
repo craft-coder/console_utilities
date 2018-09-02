@@ -11,15 +11,15 @@ addons:
       - gcc-6
       - g++-6
       - cmake
-script:
-  - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
-  - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
-  - gcc -v && g++ -v && cmake --version
 
 before_install:
   - pip install --user cpp-coveralls      
     
 script:
+  - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+  - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
+  - gcc -v && g++ -v && cmake --version
+
   # Build and test
   - mkdir -p build
   - cd build
