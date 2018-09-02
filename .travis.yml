@@ -28,5 +28,5 @@ script:
   - ctest
   
 after_success:
-  - coveralls --root . -E ".*CMakeFiles.*"
+  - coveralls --root . -E ".*CMakeFiles.*" -E ".*gtest.*"
 
