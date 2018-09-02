@@ -23,7 +23,7 @@ script:
   # Build and test
   - mkdir -p build
   - cd build
-  - cmake .. 
+  - cmake -DCOVERAGE:BOOL="1" .. 
   - cmake --build .
   - ctest
   
