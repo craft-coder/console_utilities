@@ -7,11 +7,13 @@ add_executable(console_progress_bar_tests ${SOURCE_FILES})
 
 if (COVERAGE)
     target_compile_options(console_progress_bar_tests PRIVATE --coverage)
-    target_link_libraries(console_progress_bar_tests  PRIVATE --coverage)
+    set(coverage_linker_flag --coverage)
 endif()
 
 target_include_directories(console_progress_bar_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(console_progress_bar_tests console_progress_bar gtest_main)
+target_link_libraries(console_progress_bar_tests console_progress_bar 
+                                                 gtest_main
+                                                 ${coverage_linker_flag})
 
 enable_testing()
 add_test(console_progress_bar_tests console_progress_bar_tests)

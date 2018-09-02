@@ -13,10 +13,56 @@ TEST(progress_bar, default_usage) {
 	cpb.set(0.5);
 
 	auto expected = "|##########          |";
-	auto actual = s.str();
 
-	ASSERT_TRUE(expected == actual);
+	ASSERT_TRUE(expected == s.str());
 }
+
+TEST(progress_bar, change_values) {
+	std::stringstream s;
+	console_progress_bar cpb(s);
+
+	cpb.set(0.5);
+	cpb.set(0.1);
+
+	auto expected = "|##                  |";
+
+	ASSERT_TRUE(expected == s.str());
+}
+
+TEST(progress_bar, negative_value) {
+	std::stringstream s;
+	console_progress_bar cpb(s);
+
+	cpb.set(-0.3);
+
+	auto expected = "|                    |";
+
+	ASSERT_TRUE(expected == s.str());
+}
+
+TEST(progress_bar, greater_than_one) {
+	std::stringstream s;
+	console_progress_bar cpb(s);
+
+	cpb.set(1.3);
+
+	auto expected = "|####################|";
+
+	ASSERT_TRUE(expected == s.str());
+}
+
+TEST(progress_bar, finished_after_one) {
+	std::stringstream s;
+	console_progress_bar cpb(s);
+
+	cpb.set(1.0);
+	cpb.set(0.3);
+
+	auto expected = "|####################|\n";
+
+	ASSERT_TRUE(expected == s.str());
+}
+
 
 TEST(progress_bar, cancel) {
 	std::stringstream s;
@@ -40,9 +86,8 @@ TEST(progress_bar, changed) {
 	cpb.set(0.1);
 
 	auto expected = "|!!------------------|";
-	auto actual = s.str();
-
-	ASSERT_TRUE(expected == actual);
+	
+	ASSERT_TRUE(expected == s.str());
 }
 
 TEST(progress_bar, start_end_changed) {
@@ -54,9 +99,8 @@ TEST(progress_bar, start_end_changed) {
 	cpb.set(0.1);
 
 	auto expected = "Test _/|##                  |\\_ Done";
-	auto actual = s.str();
 
-	ASSERT_TRUE(expected == actual);
+	ASSERT_TRUE(expected == s.str());
 }
 
 

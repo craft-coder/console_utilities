@@ -51,11 +51,18 @@ namespace mcf {
 				finished_ = true;
 			}
 
+			percentage = clamp(percentage, 0.0, 1.0);
 			write_line(percentage);
 		}
 
 
 	private:
+
+		double clamp(double v, double min, double max) {
+			if (v < min) return min;
+			if (v > max) return max;
+			return v;
+		}
 
 		void clear_line() {
 			os_ << std::string(last_line_length_, '\b');
