@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-namespace mcf {
+namespace craco {
 	class console_progress_bar {
 	public:
 		console_progress_bar(std::ostream& os, unsigned int width = 20)

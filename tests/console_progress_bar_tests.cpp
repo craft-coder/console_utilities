@@ -5,9 +5,9 @@
 #include <functional>
 #include "console_progress_bar.h"
 
-using namespace mcf;
+using namespace craco;
 
-std::string evaluate(const std::stringstream& s) {
+std::string simple_evaluate(const std::stringstream& s) {
 	auto result = s.str();
 	size_t pos_found;
 	while ((pos_found = result.find('\r')) != std::string::npos) {
@@ -17,7 +17,7 @@ std::string evaluate(const std::stringstream& s) {
 }
 
 void ASSERT_BUFFER(const char* expected, const std::stringstream& s) {
-	auto evaluated = evaluate(s);
+	auto evaluated = simple_evaluate(s);
 	ASSERT_STREQ(expected, evaluated.c_str());
 }
 
