@@ -10,7 +10,7 @@ message(STATUS "${project_sources}")
 add_executable(console_progress_bar_tests ${SOURCE_FILES} ${project_sources})
 
 if (COVERAGE)
-    target_compile_options(console_progress_bar_tests PRIVATE --coverage)
+    target_compile_options(console_progress_bar_tests PRIVATE --coverage -g -O0) # debug, no optimisation
     set(coverage_linker_flag --coverage)
 endif()
 
