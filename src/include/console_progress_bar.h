@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-namespace mcf {
+namespace craco {
 	class console_progress_bar {
 	public:
 		console_progress_bar(std::ostream& os, unsigned int width = 20)
@@ -33,7 +33,7 @@ namespace mcf {
 
 		void cancel(const std::string& message = "") {
 			finished_ = true;
-			os_ << message << std::endl;
+			os_ << message;
 		}
 
 		void set(double percentage) {
@@ -51,14 +51,21 @@ namespace mcf {
 				finished_ = true;
 			}
 
+			percentage = clamp(percentage, 0.0, 1.0);
 			write_line(percentage);
 		}
 
 
 	private:
 
+		double clamp(double v, double min, double max) {
+			if (v < min) return min;
+			if (v > max) return max;
+			return v;
+		}
+
 		void clear_line() {
-			os_ << std::string(last_line_length_, '\b');
+			os_ << std::string(last_line_length_, '\r');
 		}
 
 		void write_line(double percentage) {

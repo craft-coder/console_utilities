@@ -23,10 +23,10 @@ script:
   # Build and test
   - mkdir -p build
   - cd build
-  - cmake .. 
+  - cmake -DCOVERAGE:BOOL="1" .. 
   - cmake --build .
   - ctest
   
 after_success:
-  - coveralls --root . -E ".*CMakeFiles.*"
+  - coveralls --root .. -E ".*CMakeFiles.*" -E ".*gtest.*"
 
