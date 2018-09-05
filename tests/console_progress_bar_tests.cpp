@@ -4,22 +4,9 @@
 #include <algorithm>
 #include <functional>
 #include "console_progress_bar.h"
+#include "tests_common.h"
 
 using namespace craco;
-
-std::string simple_evaluate(const std::stringstream& s) {
-	auto result = s.str();
-	size_t pos_found;
-	while ((pos_found = result.find('\r')) != std::string::npos) {
-		result.erase(pos_found - 1, 2);
-	}
-	return result;
-}
-
-void ASSERT_BUFFER(const char* expected, const std::stringstream& s) {
-	auto evaluated = simple_evaluate(s);
-	ASSERT_STREQ(expected, evaluated.c_str());
-}
 
 TEST(progress_bar, default_usage) {
 	std::stringstream s;

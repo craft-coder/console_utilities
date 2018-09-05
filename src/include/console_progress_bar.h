@@ -76,8 +76,9 @@ namespace craco {
 		void write_line(double percentage) {
 			auto num_filled = static_cast<int>(percentage*width_);
 			auto num_blank = width_ - num_filled;
-			os_ << bar_start_ << std::string(num_filled, filled_char) << std::string(num_blank, blank_char) << bar_end_ << std::flush;
-			last_line_length_ = bar_start_.size() + width_ + bar_end_.size();
+			auto text = bar_start_ + std::string(num_filled, filled_char) + std::string(num_blank, blank_char) + bar_end_;
+			os_ << text << std::flush;
+			last_line_length_ = text.size();
 		}
 
 		std::ostream& os_;
