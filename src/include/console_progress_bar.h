@@ -36,6 +36,10 @@ namespace craco {
 			os_ << message;
 		}
 
+		void set_width(unsigned int width) {
+			width_ = clamp(width, 0u, 1000u);
+		}
+
 		void set(double percentage) {
 			if (finished_) return;
 
@@ -58,7 +62,8 @@ namespace craco {
 
 	private:
 
-		double clamp(double v, double min, double max) {
+		template <typename T>
+		T clamp(T v, T min, T max) {
 			if (v < min) return min;
 			if (v > max) return max;
 			return v;

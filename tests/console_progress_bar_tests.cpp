@@ -52,6 +52,26 @@ TEST(progress_bar, negative_value) {
 	ASSERT_BUFFER(expected, s);
 }
 
+TEST(progress_bar, set_width) {
+	std::stringstream s;
+	console_progress_bar cpb(s);
+	cpb.set_width(10);
+	cpb.set(0.1);
+
+	auto expected = "|#         |";
+	ASSERT_BUFFER(expected, s);
+}
+
+TEST(progress_bar, set_large_width) {
+	std::stringstream s;
+	console_progress_bar cpb(s);
+	cpb.set_width(std::numeric_limits<unsigned int>::max());
+	cpb.set(0.1);
+
+	auto expected = std::string("|") + std::string(100, '#') + std::string(900, ' ') + std::string("|");
+	ASSERT_BUFFER(expected.c_str(), s);
+}
+
 TEST(progress_bar, greater_than_one) {
 	std::stringstream s;
 	console_progress_bar cpb(s);
@@ -106,6 +126,20 @@ TEST(progress_bar, start_end_changed) {
 	cpb.set(0.1);
 
 	auto expected = "Test _/|##                  |\\_ Done";
+	ASSERT_BUFFER(expected, s);
+}
+
+TEST(progress_bar, change_after_start) {
+	std::stringstream s;
+	console_progress_bar cpb(s);
+	cpb.set(0.4);
+
+	cpb.set_bar_start("Start|");
+	cpb.set_bar_end("|End");
+	cpb.set_width(10);
+	cpb.set(0.1);
+
+	auto expected = "Start|#         |End";
 	ASSERT_BUFFER(expected, s);
 }
 
